@@ -11,3 +11,6 @@ ROLES:
 3) Student
 4) Analyst
 5) Journalist
+
+## Schedule service ERD
+https://drawsql.app/teams/pnu-dev/diagrams/schedule-erd
