@@ -16,3 +16,5 @@ ROLES:
 https://drawsql.app/teams/pnu-dev/diagrams/schedule-erd
 ## Paper service ERD
 https://drawsql.app/teams/1-689/diagrams/paper-service
+## Syllabus service ERD
+https://drawsql.app/teams/vjw-k/diagrams/syllabus-service
