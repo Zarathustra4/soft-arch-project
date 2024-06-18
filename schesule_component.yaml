@@ -1,0 +1,181 @@
+openapi: 3.0.0
+info:
+  title: Schedule Service
+  version: "1.0"
+
+paths:
+  /schedule:
+    get:
+      parameters:
+        - name: group_id
+          schema: 
+            type: integer
+        - name: teacher_id
+          schema:
+            type: integer
+        - name: date
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns a list of classes of selected day
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DaySchedule'
+  /gradepage:
+    get:
+      parameters:
+        - name: student_id
+          schema: 
+            type: integer 
+          required: true
+      responses:
+        200:
+          description: Returns a list of grades
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GradePage"
+  /assigment:
+    get:
+      parameters:
+        - name: student_id
+          schema:
+            type: integer
+          required: true
+        - name: lesson_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        200:
+          description: Retuns a assigment for a lesson
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assigment"
+
+  /assigment/attach:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachmentRequest'
+
+      responses:
+        200:
+          description: Assigment Attachment Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentResponse' 
+
+    put:
+      parameters:
+        - name: attachment_id
+          schema:
+            type: integer
+          required: true
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachmentRequest'
+
+      responses:
+        200:
+          description: Assigment Attachment Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentResponse' 
+    
+
+components:
+  schemas:
+    Lesson:
+      type: object
+      properties:
+        topic:
+          type: string
+        audience_num:
+          type: integer
+        course_title:
+          type: string
+        teacher_name:
+          type: string
+        start_time:
+          type: string
+    
+    
+    DaySchedule:
+      type: object
+      properties:
+        lessons:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Lesson'
+
+    
+    Grade:
+      type: object 
+      properties:
+        date: 
+          type: string 
+        grade:
+          type: number
+        course:
+          type: string 
+        topic: 
+          type: string
+    
+    
+    GradePage:
+      type: object
+      properties:
+        grades:
+          type: array 
+          items:
+            $ref: '#components/schemas/Grade'
+    
+    
+    Assigment:
+      type: object
+      properties:
+        task_file_link:
+          type: string
+        deadline:
+          type: string
+        status:
+          type: string
+        grade:
+          type: number
+        attachment_date:
+          type: string
+    
+    AttachmentRequest:
+      type: object
+      properties:
+        result_link:
+          type: string        
+    
+    AttachmentResponse:
+      type: object
+      properties:
+        task_file_link:
+          type: string
+        deadline:
+          type: string
+        status:
+          type: string
+        grade:
+          type: number
+        attachment_date:
+          type: string
+        result_link:
+          type: string 

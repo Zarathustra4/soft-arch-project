@@ -1,0 +1,221 @@
+openapi: 3.0.3
+info:
+  title: Syllabus API
+  description: API for syllabus control
+  version: 1.0.0
+paths:
+  /syllabuses:
+    get:
+      summary: Get access to studying resources
+      tags:
+        - Student
+      responses:
+        '200':
+          description: Resources successfully received
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+    post:
+      summary: Create syllabuses
+      tags:
+        - Teacher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Syllabus'
+      responses:
+        '201':
+          description: Syllabus successfully created
+  /syllabuses/{syllabus_id}:
+    get:
+      summary: Get access to subject's syllabus
+      tags:
+        - Student
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Subject's syllabus successfully received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Syllabus'
+    put:
+      summary: Update syllabuses
+      tags:
+        - Teacher
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Syllabus'
+      responses:
+        '200':
+          description: Syllabus succesfully changed
+    patch:
+      summary: Approve of dissaprove created syllabus
+      tags:
+        - Admin
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [approved, disapproved]
+      responses:
+        '200':
+          description: Syllabus status successfully changed
+  /syllabuses/{syllabus_id}/topics:
+    post:
+      summary: Create topic for chosen syllabus
+      tags:
+        - Teacher
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Topic'
+      responses:
+        '201':
+          description: Topic successfully created
+  /syllabuses/{syllabus_id}/topics/{topic_id}:
+    put:
+      summary: Update topic for chosen syllabus
+      tags:
+        - Teacher
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: topic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Topic'
+      responses:
+        '200':
+          description: Topic successfully updated
+  /syllabuses/{syllabus_id}/resources:
+    post:
+      summary: Attach resource for chosen syllabus
+      tags:
+        - Teacher
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        '201':
+          description: Resource successfully attached
+  /syllabuses/{syllabus_id}/resources/{resource_id}:
+    delete:
+      summary: Delete resource for chosen syllabus
+      tags:
+        - Teacher
+      parameters:
+        - name: syllabus_id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: resource_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Resource successfully deleted
+components:
+  schemas:
+    Syllabus:
+      type: object
+      properties:
+        syllabus_id:
+          type: integer
+        description:
+          type: string
+        status:
+          type: string
+        teacher_id:
+          type: integer
+    Topic:
+      type: object
+      properties:
+        topic_id:
+          type: integer
+        syllabus_id:
+          type: integer
+        number_of_lectures:
+          type: integer
+        number_of_labs:
+          type: integer
+    Resource:
+      type: object
+      properties:
+        resource_id:
+          type: integer
+        syllabus_id:
+          type: integer
+        link:
+          type: string
+        type:
+          type: string
+    Competence:
+      type: object
+      properties:
+        competence_id:
+          type: integer
+        syllabus_id:
+          type: integer
+        name:
+          type: string
